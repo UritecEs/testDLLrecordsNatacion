@@ -8,13 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using testDLLrecordsNatacion.Model.Entities;
 using testDLLrecordsNatacion.Model;
+using NLog;
+using System.Configuration;
 
 namespace testDLLrecordsNatacion.Model
 {
-    public class dbConnection
+    /// <summary>
+    /// Where all Database operations are going to be performed. 
+    /// </summary>
+    public class dbCommunication
     {
+        //Access connection string stored in WebConfig file of the project containing the DLL
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         private readonly Parser parser = new Parser();
-        private readonly string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=recordsNatacion;Integrated Security=True";
 
         #region Athlete 
         /// <summary>

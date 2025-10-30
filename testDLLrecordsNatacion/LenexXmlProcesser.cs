@@ -15,7 +15,7 @@ namespace testDLLrecordsNatacion
     /// </summary>
     public class LenexXmlProcesser
     {
-        private dbConnection dbCon = new dbConnection();
+        private dbCommunication dbCon = new dbCommunication();
         private readonly string ResourcesFolderPath = "C:\\Users\\crist\\source\\repos\\testDLLrecordsNatacion\\testDLLrecordsNatacion\\Resources\\";
 
         /// <summary>
@@ -185,6 +185,8 @@ namespace testDLLrecordsNatacion
         /// <returns>An updated list of all the Athletes existing in the DB</returns>
         private List<Athlete> UpdateDbWithXmlInfo(List<Athlete> athletesFromClub, List<Event> eventsToInsert, List<Result> resultsToInsert)
         {
+            //TODO: open DB connection here --> once the usings have been removed
+
             //insert new athletes into the database
             foreach (Athlete athlete in athletesFromClub)
             {
@@ -228,7 +230,10 @@ namespace testDLLrecordsNatacion
 
             }
 
-            return dbCon.SelectAllAthletes();
+            List<Athlete> updatedAthletes = dbCon.SelectAllAthletes();
+            //TODO: close DB connection here --> once the usings have been removed
+
+            return updatedAthletes;
         }
 
     }

@@ -26,8 +26,8 @@ namespace testDLLrecordsNatacion.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Provider=Microsoft.ACE.OLEDB.12.0;Data Source=|DataDirectory|\\recordsNatacion.acc" +
-            "db")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=recordsNatacion;Integrated Sec" +
+            "urity=True")]
         public string recordsNatacionConnectionString {
             get {
                 return ((string)(this["recordsNatacionConnectionString"]));

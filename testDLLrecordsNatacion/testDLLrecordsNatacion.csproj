@@ -41,8 +41,12 @@
       <HintPath>..\..\testAspnetCoreWebAppMVC\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="NLog, Version=6.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\projectSimilarToTennisOne\packages\NLog.6.0.5\lib\net46\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -55,7 +59,7 @@
     <Compile Include="LenexXmlProcesser.cs" />
     <Compile Include="Model\DbObjectParser.cs" />
     <Compile Include="Model\Entities\Athlete.cs" />
-    <Compile Include="Model\dbConnection.cs" />
+    <Compile Include="Model\dbCommunication.cs" />
     <Compile Include="Model\Entities\Event.cs" />
     <Compile Include="Model\Entities\Record.cs" />
     <Compile Include="Model\Entities\Result.cs" />
@@ -65,6 +69,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\uritec_spain_og_results.xml" />
@@ -76,6 +81,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\NLog.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
