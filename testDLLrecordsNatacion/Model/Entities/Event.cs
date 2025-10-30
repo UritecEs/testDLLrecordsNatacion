@@ -22,9 +22,7 @@ namespace testDLLrecordsNatacion.Model.Entities
         //public DateTime EventStartTime { get; set; }
         public int SwimDistance { get; set; }
         public string SwimStroke { get; set; }
-        public string SwimRelayCount { get; set; }
-        public int AgeMax { get; set; }
-        public int AgeMin { get; set; }
+        public int SwimRelayCount { get; set; }
         //public string Handicap { get; set; }
     }
 }

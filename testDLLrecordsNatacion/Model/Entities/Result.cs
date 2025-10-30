@@ -15,10 +15,18 @@ namespace testDLLrecordsNatacion.Model.Entities
         public int IsWaScoring { get; set; }
         public DateTime EntryTime { get; set; }
         public string Comment { get; set; }
+        public int AgeGroupMaxAge { get; set; }
+        public int AgeGroupMinAge { get; set; }
         public int EventId { get; set; }
         public int AthleteId { get; set; }
 
         public Event Event { get; set; }
         public Athlete Athlete { get; set; }
+
+        public Result GetResultWithEventAndAthlete()
+        {
+            //TODO
+            return null;
+        }
     }
 }
