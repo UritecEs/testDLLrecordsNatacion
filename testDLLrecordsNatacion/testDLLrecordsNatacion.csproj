@@ -57,9 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LenexXmlProcesser.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Model\DbObjectParser.cs" />
     <Compile Include="Model\Entities\Athlete.cs" />
-    <Compile Include="Model\dbCommunication.cs" />
+    <Compile Include="Model\DbCommunication.cs" />
     <Compile Include="Model\Entities\Event.cs" />
     <Compile Include="Model\Entities\Record.cs" />
     <Compile Include="Model\Entities\Result.cs" />
@@ -80,8 +81,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="NLog.config" />
     <None Include="packages.config" />
-    <None Include="Properties\NLog.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

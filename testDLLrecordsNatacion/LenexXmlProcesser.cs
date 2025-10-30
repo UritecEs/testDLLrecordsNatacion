@@ -15,7 +15,7 @@ namespace testDLLrecordsNatacion
     /// </summary>
     public class LenexXmlProcesser
     {
-        private dbCommunication dbCon = new dbCommunication();
+        private DbCommunication dbCon = new DbCommunication();
         private readonly string ResourcesFolderPath = "C:\\Users\\crist\\source\\repos\\testDLLrecordsNatacion\\testDLLrecordsNatacion\\Resources\\";
 
         /// <summary>

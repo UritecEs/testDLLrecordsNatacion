@@ -16,7 +16,7 @@ namespace testDLLrecordsNatacion.Model
     /// <summary>
     /// Where all Database operations are going to be performed. 
     /// </summary>
-    public class dbCommunication
+    internal class DbCommunication
     {
         //Access connection string stored in WebConfig file of the project containing the DLL
         private readonly string connectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -124,6 +124,8 @@ namespace testDLLrecordsNatacion.Model
                 }
             }
 
+            Log.Instance.Info("atletas", "atletas seleccionados");
+            Log.Instance.Fatal("atletas", "atletas seleccionados");
             return atletas;
         }
 
