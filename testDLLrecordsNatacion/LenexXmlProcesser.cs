@@ -16,7 +16,7 @@ namespace testDLLrecordsNatacion
     public class LenexXmlProcesser
     {
         private dbConnection dbCon = new dbConnection();
-        private readonly string ResourcesFolderPath = "C:\\Users\\crist\\source\\repos\\projectSimilarToTennisOne\\projectSimilarToTennisOne\\resources";
+        private readonly string ResourcesFolderPath = "C:\\Users\\crist\\source\\repos\\testDLLrecordsNatacion\\testDLLrecordsNatacion\\Resources\\";
 
         /// <summary>
         /// Reads the XML files in the resources folders and updates the database with the info 
