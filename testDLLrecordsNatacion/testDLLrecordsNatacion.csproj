@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LenexXmlProcesser.cs" />
+    <Compile Include="Model\DbObjectParser.cs" />
     <Compile Include="Model\Entities\Athlete.cs" />
     <Compile Include="Model\dbConnection.cs" />
     <Compile Include="Model\Entities\Event.cs" />

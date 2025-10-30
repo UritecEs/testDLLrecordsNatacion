@@ -10,10 +10,10 @@ namespace testDLLrecordsNatacion.Model.Entities
     {
         public int Id;
         public int SplitDistance { get; set; }
-        public DateTime SwimTime { get; set; } //correct datatype?
-        public int Points { get; set; }
+        public string SwimTime { get; set; } //save as string but process as DateTime formatted
+        public int Points { get; set; } //default -1 (if split)
         public int IsWaScoring { get; set; }
-        public DateTime EntryTime { get; set; }
+        public string EntryTime { get; set; }//splits dont have entry time //save as string but process as DateTime formatted
         public string Comment { get; set; }
         public int AgeGroupMaxAge { get; set; }
         public int AgeGroupMinAge { get; set; }

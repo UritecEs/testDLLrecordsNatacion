@@ -7,11 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using testDLLrecordsNatacion.Model.Entities;
+using testDLLrecordsNatacion.Model;
 
 namespace testDLLrecordsNatacion.Model
 {
     public class dbConnection
     {
+        private readonly Parser parser = new Parser();
         private readonly string connectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=recordsNatacion;Integrated Security=True";
 
         #region Athlete 
@@ -35,16 +37,7 @@ namespace testDLLrecordsNatacion.Model
                 {
                     while (reader.Read())
                     {
-                        athlete = new Athlete();
-                        athlete.Id = (int)reader["Id"];
-                        athlete.FullName = reader["FullName"].ToString();
-                        athlete.Birthdate = DateTime.Parse(reader["Birthdate"].ToString());
-                        athlete.Gender = reader["Gender"].ToString();
-                        athlete.Nation = reader["Nation"].ToString();
-                        athlete.License = reader["License"].ToString();
-                        athlete.ClubName = reader["ClubName"].ToString();
-                        athlete.ClubShortName = reader["ClubShortName"].ToString();
-                        athlete.ClubCode = (int)reader["ClubCode"];
+                        athlete = parser.DbReaderToAthlete(reader);
                     }
                 }
                 catch (Exception ex)
@@ -79,16 +72,7 @@ namespace testDLLrecordsNatacion.Model
                 {
                     while (reader.Read())
                     {
-                        athlete = new Athlete();
-                        athlete.Id = (int)reader["Id"];
-                        athlete.FullName = reader["FullName"].ToString();
-                        athlete.Birthdate = DateTime.Parse(reader["Birthdate"].ToString());
-                        athlete.Gender = reader["Gender"].ToString();
-                        athlete.Nation = reader["Nation"].ToString();
-                        athlete.License = reader["License"].ToString();
-                        athlete.ClubName = reader["ClubName"].ToString();
-                        athlete.ClubShortName = reader["ClubShortName"].ToString();
-                        athlete.ClubCode = (int)reader["ClubCode"];
+                        athlete = parser.DbReaderToAthlete(reader);
                     }
                 }
                 catch (Exception ex)
@@ -121,18 +105,7 @@ namespace testDLLrecordsNatacion.Model
                 {
                     while (reader.Read())
                     {
-                        Athlete atleta = new Athlete();
-                        atleta.Id = (int) reader["Id"];
-                        atleta.FullName = reader["FullName"].ToString();
-                        atleta.Birthdate = DateTime.Parse(reader["Birthdate"].ToString());
-                        atleta.Gender = reader["Gender"].ToString();
-                        atleta.Nation = reader["Nation"].ToString();
-                        atleta.License = reader["License"].ToString();
-                        atleta.ClubName = reader["ClubName"].ToString();
-                        atleta.ClubShortName = reader["ClubShortName"].ToString();
-                        atleta.ClubCode = (int) reader["ClubCode"];
-
-                        atletas.Add(atleta);
+                        atletas.Add(parser.DbReaderToAthlete(reader));
                     }
                 }
                 catch(Exception ex)
@@ -152,31 +125,26 @@ namespace testDLLrecordsNatacion.Model
         /// Adds a new athlete into the DB.
         /// NOTE: this function does not check if the athlete already exists before adding it.
         /// </summary>
-        /// <param name="athlete"></param>
-        /// <returns>0 if success, -1 if insert failed</returns>
+        /// <param name="athlete">the Athlete to insert</param>
+        /// <returns>Id of the athlete inserted, -1 if insert failed</returns>
         public int InsertAthlete(Athlete athlete)
         {
-            string query = "INSERT INTO Athlete (FullName,Birthdate,Gender,Nation,License,ClubCode,ClubName,ClubShortName) VALUES (@fullName,@birthdate,@gender,@nation,@license,@clubCode,@clubName,@clubShortName)";
-            List<Athlete> atletas = new List<Athlete>();
+            int newAthleteId = -1;
+            string query = "INSERT INTO Athlete (FullName,Birthdate,Gender,Nation,License,ClubCode,ClubName,ClubShortName) " +
+                            "VALUES (@fullName,@birthdate,@gender,@nation,@license,@clubCode,@clubName,@clubShortName); " +
+                            "SELECT SCOPE_IDENTITY();";
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@fullName", athlete.FullName);
-                    command.Parameters.AddWithValue("@birthdate", athlete.Birthdate);
-                    command.Parameters.AddWithValue("@gender", athlete.Gender);
-                    command.Parameters.AddWithValue("@nation", athlete.Nation);
-                    command.Parameters.AddWithValue("@license", athlete.License);
-                    command.Parameters.AddWithValue("@clubCode", athlete.ClubCode);
-                    command.Parameters.AddWithValue("@clubName", athlete.ClubName);
-                    command.Parameters.AddWithValue("@clubShortName", athlete.ClubShortName);
+                    parser.AthleteToSqlCommandParams(athlete,command);
 
                     connection.Open();
-                    int result = command.ExecuteNonQuery();
+                    newAthleteId = Convert.ToInt32(command.ExecuteScalar()); //return the Id of the record inserted
 
-                    // Check Error
-                    if (result < 0)
+                    //Check Error
+                    if (newAthleteId < 0)
                     {
                         Console.WriteLine("Error inserting data into Database!");
                         return -1;
@@ -184,10 +152,150 @@ namespace testDLLrecordsNatacion.Model
                 }
             }
 
-            return 0;
+            return newAthleteId;
         }
 
         //TODO: update athlete (when already existed on BD due to Excel import but is lacking data, update it with the new data provided by XML)
+        #endregion
+
+        #region Event
+        /// <summary>
+        /// Adds a new Event into the DB.
+        /// NOTE: this function does not check if the event already exists before adding it.
+        /// </summary>
+        /// <param name="evento">the Event to insert</param>
+        /// <returns>Id of the event inserted, -1 if insert failed</returns>
+        public int InsertEvent(Event evento)
+        {
+            int newEventId = -1;
+            string query = "INSERT INTO Event (MeetName,MeetDate,Nation,City,Status,PoolLength,SessionNum,SessionName,GenderCategory,EventRound,EventCourse,SwimDistance,SwimStroke,SwimRelayCount) " +
+                            "VALUES (@MeetName,@MeetDate,@Nation,@City,@Status,@PoolLength,@SessionNum,@SessionName,@GenderCategory,@EventRound,@EventCourse,@SwimDistance,@SwimStroke,@SwimRelayCount); " +
+                            "SELECT SCOPE_IDENTITY();";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    parser.EventToSqlCommandParams(evento,command);
+
+                    connection.Open();
+                    newEventId = Convert.ToInt32(command.ExecuteScalar()); //return the Id of the record inserted
+
+                    // Check Error
+                    if (newEventId < 0)
+                    {
+                        Console.WriteLine("Error inserting data into Database!");
+                        return -1;
+                    }
+                }
+            }
+
+            return newEventId;
+        }
+
+        /// <summary>
+        /// Gets all the existing events in the DB
+        /// </summary>
+        /// <returns>List of all existing events</returns>
+        public List<Event> SelectAllEvents()
+        {
+            string query = "SELECT * FROM Event";
+            List<Event> events = new List<Event>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        events.Add(parser.DbReaderToEvent(reader));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+
+            return events;
+        }
+        #endregion
+
+
+        #region Results
+        /// <summary>
+        /// Adds a new Result into the DB.
+        /// NOTE: this function does not check if the Result already exists before adding it.
+        /// </summary>
+        /// <param name="result">the Result to insert</param>
+        /// <returns>Id of the result inserted, -1 if insert failed</returns>
+        public int InsertResult(Result result)
+        {
+            int newResultId = -1;
+            string query = "INSERT INTO Result (SplitDistance,SwimTime,Points,IsWaScoring,EntryTime,Comment,AgeGroupMaxAge,AgeGroupMinAge,EventId,AthleteId) " +
+                            $"VALUES (@SplitDistance,@SwimTime,@Points,@IsWaScoring,@EntryTime,@Comment,@AgeGroupMaxAge,@AgeGroupMinAge,@EventId,@AthleteId); " +
+                            "SELECT SCOPE_IDENTITY();";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    parser.ResultToSqlCommandParams(result, command);
+
+                    connection.Open();
+                    newResultId = Convert.ToInt32(command.ExecuteScalar()); //return the Id of the record inserted
+
+                    // Check Error
+                    if (newResultId < 0)
+                    {
+                        Console.WriteLine("Error inserting data into Database!");
+                        return -1;
+                    }
+                }
+            }
+
+            return newResultId;
+        }
+
+        /// <summary>
+        /// Gets all the existing Results in the DB
+        /// </summary>
+        /// <returns>List of all existing Results</returns>
+        public List<Result> SelectAllResults()
+        {
+            string query = "SELECT * FROM Result";
+            List<Result> results = new List<Result>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        results.Add(parser.DbReaderToResult(reader));
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
+                }
+                finally
+                {
+                    reader.Close();
+                }
+            }
+
+            return results;
+        }
         #endregion
     }
 }

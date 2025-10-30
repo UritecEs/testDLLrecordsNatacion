@@ -10,6 +10,7 @@ namespace testDLLrecordsNatacion.Model.Entities
     {
         public int Id;
         public string MeetName { get; set; }
+        public DateTime MeetDate { get; set; }
         public string Nation { get; set; }
         public string City { get; set; }
         public string Status { get; set; }
