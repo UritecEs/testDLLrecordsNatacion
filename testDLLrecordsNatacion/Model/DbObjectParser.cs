@@ -23,7 +23,7 @@ namespace testDLLrecordsNatacion.Model
         internal Athlete DbReaderToAthlete(SqlDataReader reader)
         {
             Athlete atleta = new Athlete();
-            atleta.Id = (int)reader["Id"];
+            atleta.Id = Int32.Parse(reader["Id"].ToString());
             atleta.FullName = reader["FullName"].ToString();
             atleta.Birthdate = DateTime.Parse(reader["Birthdate"].ToString());
             atleta.Gender = reader["Gender"].ToString();
@@ -31,7 +31,7 @@ namespace testDLLrecordsNatacion.Model
             atleta.License = reader["License"].ToString();
             atleta.ClubName = reader["ClubName"].ToString();
             atleta.ClubShortName = reader["ClubShortName"].ToString();
-            atleta.ClubCode = (int)reader["ClubCode"];
+            atleta.ClubCode = Int32.Parse(reader["ClubCode"].ToString());
             return atleta;
         }
 
@@ -63,7 +63,7 @@ namespace testDLLrecordsNatacion.Model
         internal Event DbReaderToEvent(SqlDataReader reader)
         {
             Event evento = new Event();
-            evento.Id = (int)reader["Id"];
+            evento.Id = Int32.Parse(reader["Id"].ToString());
             evento.MeetName = reader["MeetName"].ToString();
             evento.MeetDate = DateTime.Parse(reader["MeetDate"].ToString());
             evento.Nation = reader["Nation"].ToString();
@@ -75,9 +75,9 @@ namespace testDLLrecordsNatacion.Model
             evento.GenderCategory = reader["GenderCategory"].ToString();
             evento.EventRound = reader["EventRound"].ToString();
             evento.EventCourse = reader["EventCourse"].ToString();
-            evento.SwimDistance = (int)reader["SwimDistance"];
+            evento.SwimDistance = Int32.Parse(reader["SwimDistance"].ToString());
             evento.SwimStroke = reader["SwimStroke"].ToString();
-            evento.SwimRelayCount = (int)reader["SwimRelayCount"];
+            evento.SwimRelayCount = Int32.Parse(reader["SwimRelayCount"].ToString());
             return evento;
         }
 
@@ -107,29 +107,6 @@ namespace testDLLrecordsNatacion.Model
         }
 
         /// <summary>
-        /// Creates a Result Object based on 
-        /// the returned values of the Sql Reader
-        /// </summary>
-        /// <param name="reader">SqlReader providing the data returned by the query</param>
-        /// <returns>The Result object corresponding to that reader iteration</returns>
-        internal Result DbReaderToResult(SqlDataReader reader)
-        {
-            Result result = new Result();
-            result.Id = (int)reader["Id"];
-            result.SplitDistance = (int)reader["SplitDistance"];
-            result.SwimTime = reader["SwimTime"].ToString();
-            result.Points = (int)reader["Points"];
-            result.IsWaScoring = (int)reader["IsWaScoring"];
-            result.EntryTime = reader["EntryTime"].ToString();
-            result.Comment = reader["Comment"].ToString();
-            result.AgeGroupMaxAge = (int)reader["AgeGroupMaxAge"];
-            result.AgeGroupMinAge = (int)reader["AgeGroupMinAge"];
-            result.EventId = (int)reader["EventId"];
-            result.AthleteId = (int)reader["AthleteId"];
-            return result;
-        }
-
-        /// <summary>
         /// Fills the parameters of the sql command with 
         /// the values of the attributes of the object
         /// </summary>
@@ -148,6 +125,29 @@ namespace testDLLrecordsNatacion.Model
             command.Parameters.AddWithValue("@EventId", result.EventId);
             command.Parameters.AddWithValue("@AthleteId", result.AthleteId);
             return command;
+        }
+
+        /// <summary>
+        /// Creates a Result Object based on 
+        /// the returned values of the Sql Reader
+        /// </summary>
+        /// <param name="reader">SqlReader providing the data returned by the query</param>
+        /// <returns>The Result object corresponding to that reader iteration</returns>
+        internal Result DbReaderToResult(SqlDataReader reader)
+        {
+            Result result = new Result();
+            result.Id = Int32.Parse(reader["Id"].ToString());
+            result.SplitDistance = (int)reader["SplitDistance"];
+            result.SwimTime = reader["SwimTime"].ToString();
+            result.Points = Int32.Parse(reader["Points"].ToString());
+            result.IsWaScoring = Int32.Parse(reader["IsWaScoring"].ToString());
+            result.EntryTime = reader["EntryTime"].ToString();
+            result.Comment = reader["Comment"].ToString();
+            result.AgeGroupMaxAge = Int32.Parse(reader["AgeGroupMaxAge"].ToString());
+            result.AgeGroupMinAge = Int32.Parse(reader["AgeGroupMinAge"].ToString());
+            result.EventId = Int32.Parse(reader["EventId"].ToString());
+            result.AthleteId = Int32.Parse(reader["AthleteId"].ToString());
+            return result;
         }
     }
 }

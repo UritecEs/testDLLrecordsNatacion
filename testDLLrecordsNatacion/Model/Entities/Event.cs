@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace testDLLrecordsNatacion.Model.Entities
 {
-    public class Event
+    public class Event : DbEntity
     {
         public int Id;
         public string MeetName { get; set; }
@@ -25,5 +26,31 @@ namespace testDLLrecordsNatacion.Model.Entities
         public string SwimStroke { get; set; }
         public int SwimRelayCount { get; set; }
         //public string Handicap { get; set; }
+
+        /// <summary>
+        /// Describes all of the Event's properties in a Dictionary with the desired output format.
+        /// The key is the name of the property, the value is the value of the property 
+        /// in a string formatted to how it has to be displayed in the frontend.
+        /// </summary>
+        /// <returns>Dictionary with the Event's properties described</returns>
+        public Dictionary<string, string> DescribePropertiesFormattedStr()
+        {
+            Dictionary<string, string> attributes = new Dictionary<string, string>();
+
+            PropertyInfo[] properties = this.GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                string propertyName = property.Name;
+                string propertyType = property.PropertyType.Name;
+                object propertyValue = property.GetValue(this);
+                string formattedValue = propertyValue.ToString();
+
+                //TODO: change formatting and dysplay options depending on datatype
+
+                attributes.Add(propertyName, formattedValue);
+            }
+
+            return attributes;
+        }
     }
 }

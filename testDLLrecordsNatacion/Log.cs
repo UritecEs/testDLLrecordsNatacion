@@ -1,5 +1,9 @@
 ﻿using NLog;
-
+using NLog.Config;
+using NLog.Targets;
+using NLog.Targets.Wrappers;
+using System;
+using System.IO;
 
 
 namespace testDLLrecordsNatacion
@@ -11,18 +15,33 @@ namespace testDLLrecordsNatacion
         //Logger constructor
         static Log()
         {
-            LogManager.ReconfigExistingLoggers();
+            var layout = "${date:format=yyyy-MM-dd HH\\:mm\\:ss.ff} [${level}] ${processid} ${logger} ${message} ${argument} \n${exception} ${stacktrace}";
             Instance = LogManager.GetCurrentClassLogger();
-
+            //LogManager.ReconfigExistingLoggers();
+            
             LogManager.Setup().LoadConfiguration(builder => {
-                builder.ForLogger().FilterMinLevel(LogLevel.Info).WriteToFile(fileName: "Logs/Log_debugInfo.txt");
-                builder.ForLogger().FilterMinLevel(LogLevel.Debug).WriteToFile(fileName: "Logs/Log_debugInfo.txt");
-                builder.ForLogger().FilterMinLevel(LogLevel.Warn).WriteToFile(fileName: "Logs/Log_warnErrorFatal.txt");
-                builder.ForLogger().FilterMinLevel(LogLevel.Error).WriteToFile(fileName: "Logs/Log_warnErrorFatal.txt");
-                builder.ForLogger().FilterMinLevel(LogLevel.Fatal).WriteToFile(fileName: "Logs/Log_warnErrorFatal.txt");
+                var fileTargetLowerLevels = builder.ForTarget("traceDebugInfo").WriteTo(new FileTarget
+                {
+                    FileName = Path.Combine($"Logs/{DateTime.Now.ToString("yyyyMMdd")}_log_debugInfo.txt"),
+                    Layout = layout,
+                    KeepFileOpen = false,
+                    ArchiveAboveSize = 5_000_000,  // 5 MB
+                    MaxArchiveFiles = 5,
+                }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
+                builder.ForLogger().FilterMaxLevel(LogLevel.Info).WriteTo(fileTargetLowerLevels);
+
+                var fileTargetHigherLevels = builder.ForTarget("warnErrorFatal").WriteTo(new FileTarget
+                {
+                    FileName = Path.Combine($"Logs/{DateTime.Now.ToString("yyyyMMdd")}_log_debugInfo.txt"),
+                    Layout = layout,
+                    KeepFileOpen = false,
+                    ArchiveAboveSize = 5_000_000,  // 5 MB
+                    MaxArchiveFiles = 5,
+                }).WithAsync(AsyncTargetWrapperOverflowAction.Block);
+                builder.ForLogger().FilterMinLevel(LogLevel.Warn).WriteTo(fileTargetHigherLevels);
             });
 
-            LogManager.Configuration.Reload();
+            //LogManager.Setup(new Action<ISetupBuilder>(NLog.config));
         }
 
     }

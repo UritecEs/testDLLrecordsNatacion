@@ -13,7 +13,7 @@ namespace testDLLrecordsNatacion
     /// <summary>
     /// Functions neccessary to read the xml with the swimming results and save them to the database so that they can be displayed
     /// </summary>
-    public class LenexXmlProcesser
+    internal class LenexXmlProcesser
     {
         private DbCommunication dbCon = new DbCommunication();
         private readonly string ResourcesFolderPath = "C:\\Users\\crist\\source\\repos\\testDLLrecordsNatacion\\testDLLrecordsNatacion\\Resources\\";
@@ -25,7 +25,7 @@ namespace testDLLrecordsNatacion
         /// <param name="codeOfClub">Code of the club of interest. 
         /// Only the information that is related to it will be extracted from the XML.</param>
         /// <returns>An updated list of all the Athletes existing in the DB</returns>
-        public List<Athlete> ProcessXmlFiles(string codeOfClub)
+        public void ProcessXmlFiles(string codeOfClub)
         {
             List<Athlete> athletesFromClub = new List<Athlete>();
             List<Result> resultsToAdd = new List<Result>();
@@ -172,7 +172,7 @@ namespace testDLLrecordsNatacion
             }
 
             //Now we update the DB accordingly
-            return UpdateDbWithXmlInfo(athletesFromClub, eventsToAdd, resultsToAdd);
+            UpdateDbWithXmlInfo(athletesFromClub, eventsToAdd, resultsToAdd);
         }
 
         /// <summary>
@@ -183,7 +183,7 @@ namespace testDLLrecordsNatacion
         /// <param name="eventsToInsert">List of Events that the athletesFound have participated in</param>
         /// <param name="resultsToInsert">List of Results that the athletesFound have gotten in the events</param>
         /// <returns>An updated list of all the Athletes existing in the DB</returns>
-        private List<Athlete> UpdateDbWithXmlInfo(List<Athlete> athletesFromClub, List<Event> eventsToInsert, List<Result> resultsToInsert)
+        private void UpdateDbWithXmlInfo(List<Athlete> athletesFromClub, List<Event> eventsToInsert, List<Result> resultsToInsert)
         {
             //TODO: open DB connection here --> once the usings have been removed
 
@@ -229,11 +229,7 @@ namespace testDLLrecordsNatacion
                 //TODO: now check if any of those results surpass any records
 
             }
-
-            List<Athlete> updatedAthletes = dbCon.SelectAllAthletes();
             //TODO: close DB connection here --> once the usings have been removed
-
-            return updatedAthletes;
         }
 
     }

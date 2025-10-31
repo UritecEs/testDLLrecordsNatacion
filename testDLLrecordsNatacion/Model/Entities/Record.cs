@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace testDLLrecordsNatacion.Model.Entities
 {
-    public class Record
+    public class Record: DbEntity
     {
         public int Id;
         public int Position { get; set; }

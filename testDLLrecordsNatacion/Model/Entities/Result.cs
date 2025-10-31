@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace testDLLrecordsNatacion.Model.Entities
 {
-    public class Result
+    public class Result : DbEntity
     {
         public int Id;
         public int SplitDistance { get; set; }
@@ -20,8 +20,8 @@ namespace testDLLrecordsNatacion.Model.Entities
         public int EventId { get; set; }
         public int AthleteId { get; set; }
 
-        public Event Event { get; set; }
-        public Athlete Athlete { get; set; }
+        public Event Event; //{ get; set; }
+        public Athlete Athlete; //{ get; set; }
 
         public Result GetResultWithEventAndAthlete()
         {

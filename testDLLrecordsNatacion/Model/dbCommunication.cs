@@ -117,15 +117,13 @@ namespace testDLLrecordsNatacion.Model
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
+                    Log.Instance.Fatal("Failed to fetch all athletes", ex, ex.StackTrace);
                 }
                 finally
                 {
                     reader.Close();
                 }
-            }
-
-            Log.Instance.Info("atletas", "atletas seleccionados");
-            Log.Instance.Fatal("atletas", "atletas seleccionados");
+            };
             return atletas;
         }
 
@@ -207,7 +205,7 @@ namespace testDLLrecordsNatacion.Model
         /// <returns>List of all existing events</returns>
         public List<Event> SelectAllEvents()
         {
-            string query = "SELECT * FROM Event";
+            string query = "SELECT * FROM recordsNatacion.dbo.[Event]";
             List<Event> events = new List<Event>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -224,6 +222,7 @@ namespace testDLLrecordsNatacion.Model
                 }
                 catch (Exception ex)
                 {
+                    Log.Instance.Fatal("Failed to fetch all Events", ex, ex.StackTrace);
                     Console.WriteLine(ex.Message + "\n\n" + ex.StackTrace);
                 }
                 finally

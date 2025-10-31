@@ -56,11 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProcesser.cs" />
     <Compile Include="LenexXmlProcesser.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Model\DbObjectParser.cs" />
     <Compile Include="Model\Entities\Athlete.cs" />
     <Compile Include="Model\DbCommunication.cs" />
+    <Compile Include="Model\Entities\DbEntity.cs" />
     <Compile Include="Model\Entities\Event.cs" />
     <Compile Include="Model\Entities\Record.cs" />
     <Compile Include="Model\Entities\Result.cs" />
